@@ -3,6 +3,7 @@ from datetime import datetime
 import os
 import openai
 import requests
+from ImageSize import ImageSize
 
 load_dotenv()
 
@@ -17,7 +18,7 @@ def download_image(url, path_to_save):
             f.write(response.content)
 
 
-def add_image_url_to_file(url, filename):
+def add_image_url_to_file(url: str, filename):
     with open(filename, 'a') as f:
         f.write(url + '\n')
 
@@ -31,7 +32,7 @@ def get_date():
     return formatted_date
 
 
-def generate_image(generation_prompt: object, number_of_images: object, size: object) -> object:
+def generate_image(generation_prompt: str, number_of_images: int, size: object) -> str:
     try:
         response = openai.Image.create(
             prompt=generation_prompt,
@@ -46,7 +47,7 @@ def generate_image(generation_prompt: object, number_of_images: object, size: ob
 
 if __name__ == '__main__':
     print('Generating image')
-    response_url = generate_image("hyper-realistic image of the universe", 1, "1024x1024")
+    response_url = generate_image("art for a low poly tower defense game", 1, ImageSize.LARGE)
     print('Downloading image')
     download_image(response_url, 'images/')
     add_image_url_to_file(response_url, "url.txt")
